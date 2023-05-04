@@ -13,8 +13,7 @@
             <el-date-picker v-model="toDoItem.dueDate" type="datetime" placeholder="Select date and time" />
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="onSubmit">Create</el-button>
-            <el-button>Cancel</el-button>
+            <el-button type="primary" @click="onSubmit">添加</el-button>
         </el-form-item>
     </el-form>
 </template>
