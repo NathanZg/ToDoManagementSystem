@@ -10,5 +10,5 @@ package com.todo.constants;
  */
 public interface PageConstant {
     Long CURRENT = 1L;
-    Long SIZE = 10L;
+    Long SIZE = 5L;
 }

@@ -1,9 +1,8 @@
 package com.todo.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.todo.entity.ToDoItem;
-import com.todo.entity.vo.QueryVO;
-import com.todo.entity.vo.UpdateVo;
+import com.todo.entity.vo.PageVo;
+import com.todo.entity.vo.QueryVo;
 import com.todo.service.ToDoItemService;
 import com.todo.utils.Response;
 import com.todo.utils.ResponseUtils;
@@ -27,11 +26,11 @@ public class ToDoItemController {
     }
 
     @PostMapping("/add")
-    public Response<Object> add(@RequestBody UpdateVo updateVo) {
-        if (toDoItemService.saveToDoItem(updateVo)) {
+    public Response<Object> add(@RequestBody ToDoItem toDoItem) {
+        if (toDoItemService.saveToDoItem(toDoItem)) {
             return ResponseUtils.success("add toDoItem successfully!");
         } else {
-            return ResponseUtils.success("Failed to add toDoItem!");
+            return ResponseUtils.fail("Failed to add toDoItem!");
         }
     }
 
@@ -40,22 +39,22 @@ public class ToDoItemController {
         if (toDoItemService.deleteBatchToDoItem(deleteIds)) {
             return ResponseUtils.success("delete toDoItem successfully!");
         } else {
-            return ResponseUtils.success("Failed to delete toDoItem!");
+            return ResponseUtils.fail("Failed to delete toDoItem!");
         }
     }
 
     @PostMapping("/update")
-    public Response<Object> update(@RequestBody UpdateVo updateVo) {
-        if (toDoItemService.updateToDoItem(updateVo)) {
+    public Response<Object> update(@RequestBody ToDoItem toDoItem) {
+        if (toDoItemService.updateToDoItem(toDoItem)) {
             return ResponseUtils.success("update toDoItem successfully!");
         } else {
-            return ResponseUtils.success("Failed to update toDoItem!");
+            return ResponseUtils.fail("Failed to update toDoItem!");
         }
     }
 
-    @GetMapping("/list")
-    public Response<Page<ToDoItem>> list(@RequestBody QueryVO queryVo) {
-        Page<ToDoItem> toDoItemPage = toDoItemService.pageQueryByCondition(queryVo);
-        return ResponseUtils.success(toDoItemPage);
+    @PostMapping("/list")
+    public Response<PageVo<ToDoItem>> list(@RequestBody QueryVo queryVo) {
+        PageVo<ToDoItem> toDoItemPageVo = toDoItemService.pageQueryByCondition(queryVo);
+        return ResponseUtils.success(toDoItemPageVo);
     }
 }

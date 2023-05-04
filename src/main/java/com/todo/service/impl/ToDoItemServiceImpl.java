@@ -3,13 +3,13 @@ package com.todo.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.todo.constants.PageConstant;
 import com.todo.entity.ToDoItem;
-import com.todo.entity.vo.QueryVO;
-import com.todo.entity.vo.UpdateVo;
+import com.todo.entity.vo.PageVo;
+import com.todo.entity.vo.QueryVo;
 import com.todo.mapper.ToDoItemMapper;
 import com.todo.service.ToDoItemService;
-import com.todo.utils.DateUtils;
-import com.todo.constants.PageConstant;
+import com.todo.utils.CheckUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,7 @@ public class ToDoItemServiceImpl extends ServiceImpl<ToDoItemMapper, ToDoItem> i
         this.toDoItemMapper = toDoItemMapper;
     }
     @Override
-    public Page<ToDoItem> pageQueryByCondition(QueryVO queryVo) {
+    public PageVo<ToDoItem> pageQueryByCondition(QueryVo queryVo) {
         if (queryVo == null) {
             return null;
         }
@@ -46,6 +46,10 @@ public class ToDoItemServiceImpl extends ServiceImpl<ToDoItemMapper, ToDoItem> i
         String itemTitle = queryVo.getItemTitle();
         if (itemTitle != null) {
             queryWrapper.like("item_title", itemTitle);
+        }
+        String itemDescription = queryVo.getItemDescription();
+        if (itemDescription != null) {
+            queryWrapper.like("item_description", itemDescription);
         }
         LocalDateTime startDate = queryVo.getStartDate();
         if (startDate != null) {
@@ -68,31 +72,29 @@ public class ToDoItemServiceImpl extends ServiceImpl<ToDoItemMapper, ToDoItem> i
             size = PageConstant.SIZE;
         }
         Page<ToDoItem> page = new Page<>(current, size);
+        PageVo<ToDoItem> toDoItemPageVo = new PageVo<>();
         toDoItemMapper.selectPage(page, queryWrapper);
-        return page;
+        BeanUtils.copyProperties(page, toDoItemPageVo);
+        toDoItemPageVo.setPages(page.getPages());
+        return toDoItemPageVo;
     }
 
     @Override
-    public boolean saveToDoItem(UpdateVo updateVo) {
-        if (updateVo == null) {
+    public boolean saveToDoItem(ToDoItem toDoItem) {
+        if (CheckUtils.toDoItemEmptyCheck(toDoItem)) {
             return false;
         }
-        ToDoItem toDoItem = new ToDoItem();
-        BeanUtils.copyProperties(updateVo, toDoItem);
-        String creationDate = updateVo.getCreationDate();
-        if (creationDate != null) {
-            toDoItem.setCreationDate(DateUtils.parseDate(creationDate));
-        }
-        String dueDate = updateVo.getDueDate();
-        if (dueDate != null) {
-            toDoItem.setDueDate(DateUtils.parseDate(dueDate));
+        LocalDateTime creationDate = toDoItem.getCreationDate();
+        LocalDateTime dueDate = toDoItem.getDueDate();
+        if (creationDate.isAfter(dueDate)) {
+            return false;
         }
         return toDoItemMapper.insert(toDoItem) == 1;
     }
 
     @Override
     public boolean deleteBatchToDoItem(String deleteIds) {
-        if (deleteIds == null) {
+        if (deleteIds == null || "".equals(deleteIds)) {
             return false;
         }
         String[] ids = deleteIds.split(",");
@@ -108,20 +110,16 @@ public class ToDoItemServiceImpl extends ServiceImpl<ToDoItemMapper, ToDoItem> i
     }
 
     @Override
-    public boolean updateToDoItem(UpdateVo updateVo) {
-        if (updateVo == null) {
+    public boolean updateToDoItem(ToDoItem toDoItem) {
+        if (CheckUtils.toDoItemEmptyCheck(toDoItem)) {
             return false;
         }
-        ToDoItem toDoItem = new ToDoItem();
-        BeanUtils.copyProperties(updateVo, toDoItem);
-        String creationDate = updateVo.getCreationDate();
-        if (creationDate != null) {
-            toDoItem.setCreationDate(DateUtils.parseDate(creationDate));
+        LocalDateTime creationDate = toDoItem.getCreationDate();
+        LocalDateTime dueDate = toDoItem.getDueDate();
+        if (creationDate.isAfter(dueDate)) {
+            return false;
         }
-        String dueDate = updateVo.getDueDate();
-        if (dueDate != null) {
-            toDoItem.setDueDate(DateUtils.parseDate(dueDate));
-        }
-        return toDoItemMapper.updateById(toDoItem) == 1;
+        int value = toDoItemMapper.updateById(toDoItem);
+        return value == 1;
     }
 }

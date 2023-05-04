@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class QueryVO {
+public class QueryVo {
     /**
      * 待办事项id
      */
@@ -23,6 +23,11 @@ public class QueryVO {
      * 待办事项标题
      */
     private String itemTitle;
+
+    /**
+     * 待办事项描述
+     */
+    private String itemDescription;
 
     /**
      * 开始时间
