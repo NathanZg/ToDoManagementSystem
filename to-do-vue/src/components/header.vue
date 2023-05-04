@@ -1,40 +1,36 @@
 <template>
-    <el-menu
-      :default-active="activeIndex"
-      class="el-menu-demo"
-      mode="horizontal"
-      :ellipsis="false"
-      @select="handleSelect"
-    >
-      <el-menu-item index="0">待办事项管理系统</el-menu-item>
-      <div class="flex-grow" />
-      <el-menu-item index="1">Processing Center</el-menu-item>
-      <el-sub-menu index="2">
-        <template #title>Workspace</template>
-        <el-menu-item index="2-1">item one</el-menu-item>
-        <el-menu-item index="2-2">item two</el-menu-item>
-        <el-menu-item index="2-3">item three</el-menu-item>
-        <el-sub-menu index="2-4">
-          <template #title>item four</template>
-          <el-menu-item index="2-4-1">item one</el-menu-item>
-          <el-menu-item index="2-4-2">item two</el-menu-item>
-          <el-menu-item index="2-4-3">item three</el-menu-item>
-        </el-sub-menu>
-      </el-sub-menu>
-    </el-menu>
-  </template>
+  <el-menu class="el-menu-demo" mode="horizontal" :ellipsis="false">
+    <el-menu-item @click="index" index="0">
+      <el-icon>
+        <Notification />
+      </el-icon>
+      <div>待办事项管理系统</div>
+    </el-menu-item>
+    <div class="flex-grow" />
+    <el-menu-item index="1" @click="about">
+      <el-icon>
+        <InfoFilled />
+      </el-icon>
+      <div>
+        关于
+      </div>
+    </el-menu-item>
+  </el-menu>
+</template>
 
-  <script lang="ts" setup>
-  import {ref} from 'vue'
+<script lang="ts" setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const index = () => {
+  router.push('/')
+}
+const about = () => {
+  router.push('/about')
+}
+</script>
 
-  const activeIndex = ref('1')
-  const handleSelect = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
-  }
-  </script>
-
-  <style>
-  .flex-grow {
-    flex-grow: 1;
-  }
-  </style>
+<style>
+.flex-grow {
+  flex-grow: 1;
+}
+</style>

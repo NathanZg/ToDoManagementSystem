@@ -1,5 +1,12 @@
 import httpService from "@/request/axios";
 
+export function index() {
+    return httpService({
+        url: '/index',
+        method: 'get'
+    })
+}
+
 export function list(queryVo: any) {
     return httpService({
         url: '/list',

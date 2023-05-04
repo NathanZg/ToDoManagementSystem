@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.todo.constants.PageConstant;
 import com.todo.entity.ToDoItem;
+import com.todo.entity.vo.IndexVo;
 import com.todo.entity.vo.PageVo;
 import com.todo.entity.vo.QueryVo;
 import com.todo.mapper.ToDoItemMapper;
@@ -121,5 +122,18 @@ public class ToDoItemServiceImpl extends ServiceImpl<ToDoItemMapper, ToDoItem> i
         }
         int value = toDoItemMapper.updateById(toDoItem);
         return value == 1;
+    }
+
+    @Override
+    public IndexVo indexData() {
+        Long total = toDoItemMapper.selectCount(null);
+        QueryWrapper<ToDoItem> wrapper = new QueryWrapper<>();
+        wrapper.eq("completion_flag", 0);
+        Long unfinished = toDoItemMapper.selectCount(wrapper);
+        wrapper = new QueryWrapper<>();
+        wrapper.eq("completion_flag", 1);
+        Long finished = toDoItemMapper.selectCount(wrapper);
+        Long expired = toDoItemMapper.selectExpiredCount();
+        return new IndexVo(total, unfinished, finished, expired);
     }
 }

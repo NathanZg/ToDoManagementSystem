@@ -1,6 +1,7 @@
 package com.todo.controller;
 
 import com.todo.entity.ToDoItem;
+import com.todo.entity.vo.IndexVo;
 import com.todo.entity.vo.PageVo;
 import com.todo.entity.vo.QueryVo;
 import com.todo.service.ToDoItemService;
@@ -23,6 +24,12 @@ public class ToDoItemController {
 
     public ToDoItemController(ToDoItemService toDoItemService) {
         this.toDoItemService = toDoItemService;
+    }
+
+    @GetMapping("index")
+    public Response<IndexVo> index() {
+        IndexVo indexVo = toDoItemService.indexData();
+        return ResponseUtils.success(indexVo);
     }
 
     @PostMapping("/add")

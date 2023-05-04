@@ -25,7 +25,7 @@ import {add} from '@/api/todo'
 import {ElNotification} from 'element-plus'
 import {useRouter} from 'vue-router'
 
-const router = useRouter();
+const router = useRouter()
 const toDoItem = reactive({
     itemId: null,
     itemTitle: null,
@@ -53,7 +53,7 @@ const onSubmit = () => {
                 message: '添加成功！',
                 offset: 100
             })
-            router.push('/list');
+            router.push('/list')
         } else {
             ElNotification.error({
                 title: 'error',

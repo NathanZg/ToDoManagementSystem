@@ -25,8 +25,8 @@
             <el-text class="mx-1" v-else="scope.row.completionFlag == 1">已完成</el-text>
         </el-table-column>
         <el-table-column label="Operations" width="150" v-slot="scope">
-            <el-button size="small" @click="handleEdit(scope.row)">Edit</el-button>
-            <el-button size="small" type="danger" @click="handleDelete(scope.row.itemId)">Delete</el-button>
+            <el-button size="small" @click="handleEdit(scope.row)">更新</el-button>
+            <el-button size="small" type="danger" @click="handleDelete(scope.row.itemId)">删除</el-button>
         </el-table-column>
     </el-table>
     <el-divider />

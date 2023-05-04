@@ -5,16 +5,16 @@
       :router="true"
     >
     <el-menu-item index="/">
-        <el-icon><icon-menu /></el-icon>
+        <el-icon><House /></el-icon>
         <template #title>首页</template>
       </el-menu-item>
       <el-menu-item index="/list">
-        <el-icon><icon-menu /></el-icon>
+        <el-icon><List /></el-icon>
         <template #title>待办事项列表</template>
       </el-menu-item>
       <el-menu-item index="/add">
-        <el-icon><document /></el-icon>
-        <template #title>添加</template>
+        <el-icon><FolderAdd /></el-icon>
+        <template #title>添加待办事项</template>
       </el-menu-item>
     </el-menu>
   </template>

@@ -1,7 +1,7 @@
 package com.todo.mapper;
 
-import com.todo.entity.ToDoItem;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.todo.entity.ToDoItem;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -15,4 +15,9 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ToDoItemMapper extends BaseMapper<ToDoItem> {
 
+    /**
+     * 查询过期待办事项个数
+     * @return Long
+     */
+    Long selectExpiredCount();
 }

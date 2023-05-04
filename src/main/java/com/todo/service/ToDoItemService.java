@@ -2,6 +2,7 @@ package com.todo.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.todo.entity.ToDoItem;
+import com.todo.entity.vo.IndexVo;
 import com.todo.entity.vo.PageVo;
 import com.todo.entity.vo.QueryVo;
 
@@ -43,4 +44,14 @@ public interface ToDoItemService extends IService<ToDoItem> {
      * @return boolean 布尔值
      */
     boolean updateToDoItem(ToDoItem toDoItem);
+
+    /**
+     * 返回首页统计数据
+     * 1.待办事项总数
+     * 2.完成的待办事项总数
+     * 3.已完成的待办事项总数
+     * 4.已过期的待办事项总数
+     * @return IndexVo 首页数据封装对象
+     */
+    IndexVo indexData();
 }

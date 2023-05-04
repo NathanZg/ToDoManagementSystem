@@ -2,4 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.todo.mapper.ToDoItemMapper">
 
+    <select id="selectExpiredCount" resultType="java.lang.Long">
+        select count(*)
+        from to_do_item as t
+        where t.due_date &lt; NOW();
+    </select>
 </mapper>
