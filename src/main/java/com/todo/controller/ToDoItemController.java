@@ -26,12 +26,23 @@ public class ToDoItemController {
         this.toDoItemService = toDoItemService;
     }
 
+    /**
+     * 返回首页数据
+     *
+     * @return Response<IndexVo>
+     */
     @GetMapping("index")
     public Response<IndexVo> index() {
         IndexVo indexVo = toDoItemService.indexData();
         return ResponseUtils.success(indexVo);
     }
 
+    /**
+     * 添加待办事项
+     *
+     * @param toDoItem
+     * @return Response<Object>
+     */
     @PostMapping("/add")
     public Response<Object> add(@RequestBody ToDoItem toDoItem) {
         if (toDoItemService.saveToDoItem(toDoItem)) {
@@ -41,6 +52,12 @@ public class ToDoItemController {
         }
     }
 
+    /**
+     * 批量删除代办实习
+     *
+     * @param deleteIds
+     * @return Response<Object>
+     */
     @DeleteMapping("/delete")
     public Response<Object> delete(@RequestBody String deleteIds) {
         if (toDoItemService.deleteBatchToDoItem(deleteIds)) {
@@ -50,6 +67,12 @@ public class ToDoItemController {
         }
     }
 
+    /**
+     * 更新待办事项
+     *
+     * @param toDoItem
+     * @return Response<Object>
+     */
     @PostMapping("/update")
     public Response<Object> update(@RequestBody ToDoItem toDoItem) {
         if (toDoItemService.updateToDoItem(toDoItem)) {
@@ -59,6 +82,12 @@ public class ToDoItemController {
         }
     }
 
+    /**
+     * 分页查询待办事项
+     *
+     * @param queryVo
+     * @return Response<PageVo < ToDoItem>>
+     */
     @PostMapping("/list")
     public Response<PageVo<ToDoItem>> list(@RequestBody QueryVo queryVo) {
         PageVo<ToDoItem> toDoItemPageVo = toDoItemService.pageQueryByCondition(queryVo);

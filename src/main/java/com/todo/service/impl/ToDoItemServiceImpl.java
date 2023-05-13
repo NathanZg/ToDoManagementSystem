@@ -13,6 +13,8 @@ import com.todo.service.ToDoItemService;
 import com.todo.utils.CheckUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,7 +36,9 @@ public class ToDoItemServiceImpl extends ServiceImpl<ToDoItemMapper, ToDoItem> i
     public ToDoItemServiceImpl(ToDoItemMapper toDoItemMapper) {
         this.toDoItemMapper = toDoItemMapper;
     }
+
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public PageVo<ToDoItem> pageQueryByCondition(QueryVo queryVo) {
         if (queryVo == null) {
             return null;
@@ -81,6 +85,7 @@ public class ToDoItemServiceImpl extends ServiceImpl<ToDoItemMapper, ToDoItem> i
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public boolean saveToDoItem(ToDoItem toDoItem) {
         if (CheckUtils.toDoItemEmptyCheck(toDoItem)) {
             return false;
@@ -94,6 +99,7 @@ public class ToDoItemServiceImpl extends ServiceImpl<ToDoItemMapper, ToDoItem> i
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public boolean deleteBatchToDoItem(String deleteIds) {
         if (deleteIds == null || "".equals(deleteIds)) {
             return false;
@@ -111,6 +117,7 @@ public class ToDoItemServiceImpl extends ServiceImpl<ToDoItemMapper, ToDoItem> i
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public boolean updateToDoItem(ToDoItem toDoItem) {
         if (CheckUtils.toDoItemEmptyCheck(toDoItem)) {
             return false;
@@ -125,6 +132,7 @@ public class ToDoItemServiceImpl extends ServiceImpl<ToDoItemMapper, ToDoItem> i
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public IndexVo indexData() {
         Long total = toDoItemMapper.selectCount(null);
         QueryWrapper<ToDoItem> wrapper = new QueryWrapper<>();
